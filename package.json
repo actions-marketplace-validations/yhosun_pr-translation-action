@@ -1,0 +1,15 @@
+{
+  "name": "pr-translation-action",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "private": true,
+  "scripts": {
+    "dev": "ncc build index.js -o dist -w",
+    "build": "ncc build index.js -o dist"
+  },
+  "dependencies": {
+    "@actions/core": "^1.6.0",
+    "@actions/github": "^5.0.0",
+    "@google-cloud/translate": "^6.3.1"
+  }
+}

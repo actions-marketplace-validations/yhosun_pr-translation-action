@@ -1,0 +1,27 @@
+name: 'PR Translation'
+description: 'It translates titles, descriptions, and comments of PRs.'
+inputs:
+  language-1:
+    description: 'First language to translate. This action translates between two languages.'
+    required: false
+    default: 'en'
+  language-2:
+    description: 'Second language to translate. This action translates between two languages.'
+    required: false
+    default: 'ko'
+  repo-token:
+    description: 'GitHub Repo Token'
+    required: true
+  google-project-id:
+    description: 'Google Project ID for Translation APIs'
+    required: true
+  google-credentials:
+    description: 'Google Credentials in JSON / JS Object format'
+    required: true
+  translation-emoji:
+    description: 'Divider between two languages'
+    required: false
+    default: ':thought_balloon:'
+runs:
+  using: 'node16'
+  main: 'dist/index.js'

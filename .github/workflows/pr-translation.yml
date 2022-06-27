@@ -1,0 +1,27 @@
+###################################################
+# This is only to test this action.
+# ##################################################
+name: PR Translation
+on:
+  pull_request:
+    types: [ opened, edited ] # Remove "edited" when you actually use this action.
+  issue_comment: # PR comments are triggered by this event instead of "pull_request_review_comment"
+    types: [created, edited] # Remove "edited" when you actually use this action.
+jobs:
+  translate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - name: Use Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Translate
+        uses: ./
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          google-project-id: 'blind-slackbot'
+          google-credentials: ${{ secrets.GOOGLE_TL_CREDENTIALS }}
