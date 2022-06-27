@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Translate
-        uses: yhosun/pr-translation-action
+        uses: yhosun/pr-translation-action@v1.0.0
         with:
           language-1: 'en'
           language-2: 'ko'
