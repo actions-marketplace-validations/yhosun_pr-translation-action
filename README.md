@@ -1,6 +1,6 @@
 # PR Translation Action
 
-This action translates a PR (Pull Request) title, a description, and comments between two languages.
+This action translates a PR (Pull Request) title, a description, and comments between two languages with Google Translate.
 For example, you can assign `en` to the action inputs `language-1` and `ko` to `language-2`.
 A translated Korean comment is added to an English comment, and vice versa.
 
