@@ -1,4 +1,7 @@
 name: 'PR Translation'
+branding:
+  icon: 'book-open'
+  color: 'yellow'
 description: 'It translates titles, descriptions, and comments of PRs.'
 inputs:
   language-1:
