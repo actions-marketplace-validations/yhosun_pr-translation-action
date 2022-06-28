@@ -23,5 +23,5 @@ jobs:
         uses: ./
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          google-project-id: 'blind-slackbot'
+          google-project-id: 'my-google-project-id'
           google-credentials: ${{ secrets.GOOGLE_TL_CREDENTIALS }}
