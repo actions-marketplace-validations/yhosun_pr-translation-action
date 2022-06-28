@@ -24,7 +24,7 @@ inputs:
   translation-emoji:
     description: 'Divider between two languages'
     required: false
-    default: ':thought_balloon:'
+    default: ':balloon:'
 runs:
   using: 'node16'
   main: 'dist/index.js'
