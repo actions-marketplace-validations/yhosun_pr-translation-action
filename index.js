@@ -11,6 +11,7 @@ const translate = new Translate({
 
 const TL_ICON = core.getInput('translation-emoji');
 const TL_LABEL = `${TL_ICON} *Translation*`;
+const TL_TITLE_SPLITER = '||';
 
 const main = async () => {
     const payload = JSON.stringify(github, undefined, 2);
@@ -31,14 +32,18 @@ const main = async () => {
 const translatePullRequest = async (octokit, payload, lang1, lang2) => {
     const title = payload.pull_request.title;
     const desc = payload.pull_request.body;
-    const tanslatedTitle = await translateText(title, lang1, lang2);
+    let tanslatedTitle = title;
+    if (!title.include(TL_TITLE_SPLITER)) {
+        const tanslatedTitle = await translateText(title, lang1, lang2);
+    }
+
     const tanslatedDesc = await translateText(desc, lang1, lang2);
 
     await octokit.rest.pulls.update({
         owner: payload.repository.owner.login,
         repo: payload.repository.name,
         pull_number: payload.pull_request.number,
-        title: `${title} || ${tanslatedTitle}`,
+        title: `${title} ${TL_TITLE_SPLITER} ${tanslatedTitle}`,
         body: formatDesc(desc, tanslatedDesc)
     });
 }
