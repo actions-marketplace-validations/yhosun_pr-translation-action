@@ -15,7 +15,8 @@ const TL_TITLE_SPLITER = '||';
 
 const main = async () => {
     const payload = JSON.stringify(github, undefined, 2);
-    core.debug(`${payload}`);
+    //core.debug(`${payload}`);
+    console.log(`${payload}`);
 
     const lang1 = core.getInput('language-1'); // e.g. en
     const lang2 = core.getInput('language-2'); // e.g. ko
