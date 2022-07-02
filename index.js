@@ -35,19 +35,21 @@ const translatePullRequest = async (octokit, payload, lang1, lang2) => {
     let tanslatedTitle = title;
     let tanslatedDesc = desc;
     if (!title.includes(TL_TITLE_SPLITER)) {
-        const tanslatedTitle = await translateText(title, lang1, lang2);
+        tanslatedTitle = await translateText(title, lang1, lang2);
+        tanslatedTitle = `${title} ${TL_TITLE_SPLITER} ${tanslatedTitle}`;
     }
 
     if (!desc.includes(getTranslationLabel(payload.pull_request.number))) {
         tanslatedDesc = await translateText(desc, lang1, lang2);
+        tanslatedDesc = formatDesc(desc, tanslatedDesc, payload.pull_request.number);
     }
 
     await octokit.rest.pulls.update({
         owner: payload.repository.owner.login,
         repo: payload.repository.name,
         pull_number: payload.pull_request.number,
-        title: `${title} ${TL_TITLE_SPLITER} ${tanslatedTitle}`,
-        body: formatDesc(desc, tanslatedDesc, payload.pull_request.number)
+        title: tanslatedTitle,
+        body: tanslatedDesc
     });
 }
 
@@ -105,7 +107,7 @@ const translateText = async (text, lang1, lang2) => {
     return translation;
 }
 
-const getTranslationTextLabel = (id) => `**[Translation]** (id: ${id})`;
+const getTranslationTextLabel = (id) => `**[Translation]** *(id: ${id})*`;
 
 const getTranslationLabel = (id) => `${TL_ICON} ${getTranslationTextLabel(id)}`;
 
