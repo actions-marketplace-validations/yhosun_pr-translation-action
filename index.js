@@ -19,8 +19,10 @@ const main = async () => {
     const lang1 = core.getInput('language-1'); // e.g. en
     const lang2 = core.getInput('language-2'); // e.g. ko
 
-    if (['issue_comment', 'pull_request_review_comment'].includes(github.context.eventName )) {
-        await translateComment(octokit, github.context.payload, lang1, lang2);
+    if (github.context.eventName === 'issue_comment') {
+        await translateIssueComment(octokit, github.context.payload, lang1, lang2);
+    } else if (github.context.eventName === 'pull_request_review_comment') {
+        await translateReviewComment(octokit, github.context.payload, lang1, lang2);
     } else if (github.context.eventName === 'pull_request') {
         await translatePullRequest(octokit, github.context.payload, lang1, lang2);
     } else {
@@ -47,7 +49,7 @@ const translatePullRequest = async (octokit, payload, lang1, lang2) => {
     });
 }
 
-const translateComment = async (octokit, payload, lang1, lang2) => {
+const translateIssueComment = async (octokit, payload, lang1, lang2) => {
     const comment = payload.comment.body;
 
     if (!comment) {
@@ -57,6 +59,24 @@ const translateComment = async (octokit, payload, lang1, lang2) => {
     const translation = await translateText(comment, lang1, lang2);
 
     await octokit.rest.issues.updateComment({
+        owner: payload.repository.owner.login,
+        repo: payload.repository.name,
+        comment_id: payload.comment.id,
+        body: formatDesc(comment, translation)
+    });
+
+}
+
+const translateReviewComment = async (octokit, payload, lang1, lang2) => {
+    const comment = payload.comment.body;
+
+    if (!comment) {
+        return;
+    }
+
+    const translation = await translateText(comment, lang1, lang2);
+
+    await octokit.rest.review_comment.update({
         owner: payload.repository.owner.login,
         repo: payload.repository.name,
         comment_id: payload.comment.id,
