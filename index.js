@@ -107,7 +107,7 @@ const translateText = async (text, lang1, lang2) => {
     return translation;
 }
 
-const getTranslationTextLabel = (id) => `**[Translation]** *(id: ${id})*`;
+const getTranslationTextLabel = (id) => `[Translation] *(${id})*`;
 
 const getTranslationLabel = (id) => `${TL_ICON} ${getTranslationTextLabel(id)}`;
 
