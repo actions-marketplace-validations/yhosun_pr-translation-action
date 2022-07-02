@@ -19,7 +19,7 @@ const main = async () => {
     const lang1 = core.getInput('language-1'); // e.g. en
     const lang2 = core.getInput('language-2'); // e.g. ko
 
-    if (github.context.eventName in ['issue_comment', 'pull_request_review_comment']) {
+    if (['issue_comment', 'pull_request_review_comment'].includes(github.context.eventName )) {
         await translateComment(octokit, github.context.payload, lang1, lang2);
     } else if (github.context.eventName === 'pull_request') {
         await translatePullRequest(octokit, github.context.payload, lang1, lang2);
