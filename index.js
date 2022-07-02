@@ -76,7 +76,7 @@ const translateReviewComment = async (octokit, payload, lang1, lang2) => {
 
     const translation = await translateText(comment, lang1, lang2);
 
-    await octokit.rest.review_comment.update({
+    await octokit.rest.pulls.updateReviewComment({
         owner: payload.repository.owner.login,
         repo: payload.repository.name,
         comment_id: payload.comment.id,
