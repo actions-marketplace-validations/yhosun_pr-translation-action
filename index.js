@@ -10,7 +10,6 @@ const translate = new Translate({
 });
 
 const TL_ICON = core.getInput('translation-emoji');
-const TL_LABEL = `${TL_ICON} *Translation*`;
 const TL_TITLE_SPLITER = '||';
 
 const main = async () => {
@@ -34,18 +33,21 @@ const translatePullRequest = async (octokit, payload, lang1, lang2) => {
     const title = payload.pull_request.title;
     const desc = payload.pull_request.body;
     let tanslatedTitle = title;
-    if (!title.include(TL_TITLE_SPLITER)) {
+    let tanslatedDesc = desc;
+    if (!title.includes(TL_TITLE_SPLITER)) {
         const tanslatedTitle = await translateText(title, lang1, lang2);
     }
 
-    const tanslatedDesc = await translateText(desc, lang1, lang2);
+    if (!desc.includes(getTranslationLabel(payload.pull_request.number))) {
+        tanslatedDesc = await translateText(desc, lang1, lang2);
+    }
 
     await octokit.rest.pulls.update({
         owner: payload.repository.owner.login,
         repo: payload.repository.name,
         pull_number: payload.pull_request.number,
         title: `${title} ${TL_TITLE_SPLITER} ${tanslatedTitle}`,
-        body: formatDesc(desc, tanslatedDesc)
+        body: formatDesc(desc, tanslatedDesc, payload.pull_request.number)
     });
 }
 
@@ -62,7 +64,7 @@ const translateIssueComment = async (octokit, payload, lang1, lang2) => {
         owner: payload.repository.owner.login,
         repo: payload.repository.name,
         comment_id: payload.comment.id,
-        body: formatDesc(comment, translation)
+        body: formatDesc(comment, translation, payload.comment.id)
     });
 
 }
@@ -80,7 +82,7 @@ const translateReviewComment = async (octokit, payload, lang1, lang2) => {
         owner: payload.repository.owner.login,
         repo: payload.repository.name,
         comment_id: payload.comment.id,
-        body: formatDesc(comment, translation)
+        body: formatDesc(comment, translation, payload.comment.id)
     });
 
 }
@@ -103,9 +105,13 @@ const translateText = async (text, lang1, lang2) => {
     return translation;
 }
 
-const formatDesc = (text, translation) => {
+const getTranslationTextLabel = (id) => `**[Translation]** (id: ${id})`;
+
+const getTranslationLabel = (id) => `${TL_ICON} ${getTranslationTextLabel(id)}`;
+
+const formatDesc = (text, translation, id) => {
     return `${text}
-<br>${TL_LABEL}
+<br>${getTranslationLabel(id)}
 <br>${translation}`;
 }
 

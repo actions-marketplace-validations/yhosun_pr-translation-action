@@ -7,7 +7,7 @@ A translated Korean comment is added to an English comment, and vice versa.
 ## Supported Events and Types
 | Event         | Types       |
 | -----------   | ----------- |
-| pull_request  | opened      |
+| pull_request  | opened, ready_for_review     |
 | issue_comment | created     |
 | pull_request_review_comment| created |
 
