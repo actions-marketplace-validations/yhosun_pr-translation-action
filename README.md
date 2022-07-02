@@ -9,6 +9,7 @@ A translated Korean comment is added to an English comment, and vice versa.
 | -----------   | ----------- |
 | pull_request  | opened      |
 | issue_comment | created     |
+| pull_request_review_comment| created |
 
 **"edited" types are not supported.**
 

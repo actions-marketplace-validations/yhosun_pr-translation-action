@@ -14,14 +14,12 @@ const TL_LABEL = `${TL_ICON} *Translation*`;
 const TL_TITLE_SPLITER = '||';
 
 const main = async () => {
-    const payload = JSON.stringify(github, undefined, 2);
-    //core.debug(`${payload}`);
-    console.log(`${payload}`);
+    core.debug(JSON.stringify(github, undefined, 2));
 
     const lang1 = core.getInput('language-1'); // e.g. en
     const lang2 = core.getInput('language-2'); // e.g. ko
 
-    if (github.context.eventName === 'issue_comment') {
+    if (github.context.eventName in ['issue_comment', 'pull_request_review_comment']) {
         await translateComment(octokit, github.context.payload, lang1, lang2);
     } else if (github.context.eventName === 'pull_request') {
         await translatePullRequest(octokit, github.context.payload, lang1, lang2);
