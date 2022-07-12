@@ -10,6 +10,7 @@ A translated Korean comment is added to an English comment, and vice versa.
 | pull_request  | opened, ready_for_review     |
 | issue_comment | created     |
 | pull_request_review_comment| created |
+| pull_request_review| submitted, dismissed |
 
 **"edited" types are not supported.**
 
@@ -21,6 +22,10 @@ on:
     types: [ opened ]
   issue_comment:
     types: [created ]
+  pull_request_review_comment:
+    types: [created]
+  pull_request_review:
+    types: [submitted, dismissed]
 jobs:
   translate:
     runs-on: ubuntu-latest
