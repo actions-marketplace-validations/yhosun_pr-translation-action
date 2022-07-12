@@ -29,6 +29,7 @@ const main = async () => {
     }
 }
 
+// translate a title and a description when a PR is created.
 const translatePullRequest = async (octokit, payload, lang1, lang2) => {
     const title = payload.pull_request.title;
     const desc = payload.pull_request.body;
@@ -53,6 +54,7 @@ const translatePullRequest = async (octokit, payload, lang1, lang2) => {
     });
 }
 
+// translate an one-off comment
 const translateIssueComment = async (octokit, payload, lang1, lang2) => {
     const comment = payload.comment.body;
 
@@ -85,6 +87,26 @@ const translateReviewComment = async (octokit, payload, lang1, lang2) => {
         repo: payload.repository.name,
         comment_id: payload.comment.id,
         body: formatDesc(comment, translation, payload.comment.id)
+    });
+
+}
+
+// translate a comment when a PR is approved / rejected.
+const translateReviewSubmission = async (octokit, payload, lang1, lang2) => {
+    const comment = payload.review.body;
+
+    if (!comment) {
+        return;
+    }
+
+    const translation = await translateText(comment, lang1, lang2);
+
+    await octokit.rest.pulls.updateReview({
+        owner: payload.repository.owner.login,
+        repo: payload.repository.name,
+        pull_number: payload.pull_request.number,
+        review_id: payload.review.id,
+        body: formatDesc(comment, translation, payload.review.id)
     });
 
 }
