@@ -22,6 +22,8 @@ const main = async () => {
         await translateIssueComment(octokit, github.context.payload, lang1, lang2);
     } else if (github.context.eventName === 'pull_request_review_comment') {
         await translateReviewComment(octokit, github.context.payload, lang1, lang2);
+    } else if (github.context.eventName === 'pull_request_review') {
+        await translateReviewSubmission(octokit, github.context.payload, lang1, lang2);
     } else if (github.context.eventName === 'pull_request') {
         await translatePullRequest(octokit, github.context.payload, lang1, lang2);
     } else {
