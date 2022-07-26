@@ -35,14 +35,14 @@ const main = async () => {
 const translatePullRequest = async (octokit, payload, lang1, lang2) => {
     const title = payload.pull_request.title;
     const desc = payload.pull_request.body;
-    let tanslatedTitle = title;
-    let tanslatedDesc = desc;
-    if (!title.includes(TL_TITLE_SPLITER)) {
+    let tanslatedTitle = title || '';
+    let tanslatedDesc = desc || '';
+    if (title && !title.includes(TL_TITLE_SPLITER)) {
         tanslatedTitle = await translateText(title, lang1, lang2);
         tanslatedTitle = `${title} ${TL_TITLE_SPLITER} ${tanslatedTitle}`;
     }
 
-    if (!desc.includes(getTranslationLabel(payload.pull_request.number))) {
+    if (desc && !desc.includes(getTranslationLabel(payload.pull_request.number))) {
         tanslatedDesc = await translateText(desc, lang1, lang2);
         tanslatedDesc = formatDesc(desc, tanslatedDesc, payload.pull_request.number);
     }
