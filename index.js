@@ -136,9 +136,12 @@ const getTranslationTextLabel = (id) => `[Translation] *(${id})*`;
 const getTranslationLabel = (id) => `${TL_ICON} ${getTranslationTextLabel(id)}`;
 
 const formatDesc = (text, translation, id) => {
-    return `${text}
-<br>${getTranslationLabel(id)}
-<br>${translation}`;
+    // add two spaces at the end for a newline.
+    return `${text}  
+  
+${getTranslationLabel(id)}  
+  
+${translation}`;
 }
 
 try {
